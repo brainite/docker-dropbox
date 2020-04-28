@@ -7,6 +7,8 @@
 FROM debian:stretch
 MAINTAINER Adam K Dean <adamkdean@googlemail.com>
 ENV DEBIAN_FRONTEND noninteractive
+ENV LC_CTYPE en_US.UTF-8
+ENV LANG C.UTF-8
 
 # From 'How do I add or remove Dropbox from my Linux repository?' -
 # https://www.dropbox.com/en/help/246
@@ -53,6 +55,9 @@ RUN mkdir -p /opt/dropbox \
 	&& chmod g-w /tmp \
 	# Prepare for command line wrapper
 	&& mv /usr/bin/dropbox /usr/bin/dropbox-cli
+
+# For some reason, several configs still point at /home/dropbox/
+RUN ln -s /dbox /home/dropbox
 
 # Install init script and dropbox command line wrapper
 COPY run /root/
